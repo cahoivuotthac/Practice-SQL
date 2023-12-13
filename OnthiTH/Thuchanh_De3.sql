@@ -106,7 +106,7 @@ AS
 	IF UPDATE(QUOCGIA)
 		IF EXISTS(SELECT * FROM PHIEUNHAP PN, INSERTED I 
 							WHERE PN.MANCC = I.MANCC 
-								AND I.QUOCGIA = 'Việt Nam' AND PN.LOAINHAP = 'Nhập khẩu')
+								AND I.QUOCGIA != 'Việt Nam' AND PN.LOAINHAP != 'Nhập khẩu')
 		BEGIN
 			RAISERROR('Phiếu nhập của những nhà cung cấp ở những quốc gia khác Việt Nam đều có loại nhập là Nhập khẩu', 16, 1)
 			ROLLBACK TRAN
@@ -117,7 +117,7 @@ CREATE TRIGGER R2 ON PHIEUNHAP FOR UPDATE, INSERT
 AS
 	IF EXISTS(SELECT * FROM NHACUNGCAP NCC, INSERTED I
 						WHERE NCC.MANCC = I.MANCC
-							AND NCC.QUOCGIA = 'Việt Nam' AND I.LOAINHAP = 'Nhập khẩu')
+							AND NCC.QUOCGIA != 'Việt Nam' AND I.LOAINHAP != 'Nhập khẩu')
 	BEGIN
 		RAISERROR('Phiếu nhập của những nhà cung cấp ở những quốc gia khác Việt Nam đều có loại nhập là Nhập khẩu', 16, 1)
 		ROLLBACK TRAN
